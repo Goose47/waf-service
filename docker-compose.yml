@@ -45,7 +45,7 @@ services:
 
   producer:
     build:
-      context: ./producer
+      context: .
       dockerfile: producer/Dockerfile
     container_name: producer
     restart: unless-stopped
@@ -56,7 +56,7 @@ services:
 
   consumer:
     build:
-      context: ./consumer
+      context: .
       dockerfile: consumer/Dockerfile
     container_name: consumer
     restart: unless-stopped
