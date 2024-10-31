@@ -45,8 +45,8 @@ services:
 
   producer:
     build:
-      context: .
-      dockerfile: producer/Dockerfile
+      context: ./producer
+      dockerfile: ./Dockerfile
     container_name: producer
     restart: unless-stopped
     ports:
@@ -56,8 +56,8 @@ services:
 
   consumer:
     build:
-      context: .
-      dockerfile: consumer/Dockerfile
+      context: ./consumer
+      dockerfile: ./Dockerfile
     container_name: consumer
     restart: unless-stopped
     ports:
