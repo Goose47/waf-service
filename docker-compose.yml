@@ -66,5 +66,5 @@ services:
       - mq
 
 networks:
-  - mq:
+  mq:
       driver: bridge
