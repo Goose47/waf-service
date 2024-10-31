@@ -11,6 +11,7 @@ func main() {
 	config := sarama.NewConfig()
 	config.Producer.RequiredAcks = sarama.WaitForLocal
 	config.Producer.Return.Errors = true
+	config.Producer.Return.Successes = true
 
 	brokers := []string{"kafka:29092"}
 	producer, err := sarama.NewSyncProducer(brokers, config)
