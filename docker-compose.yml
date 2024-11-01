@@ -58,7 +58,7 @@ services:
   detection:
     build:
       context: ./detection
-      dockerfile: ./detection/Dockerfile
+      dockerfile: ./Dockerfile
     container_name: detection
     restart: unless-stopped
     networks:
