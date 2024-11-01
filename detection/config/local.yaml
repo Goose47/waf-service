@@ -1,0 +1,10 @@
+env: "local"
+port: 8000
+redis:
+  host: "redis"
+  port: 6379
+  pass: ""
+kafka:
+  host: "kafka"
+  port: 29092
+  topic: "detection"
