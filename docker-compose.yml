@@ -10,7 +10,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     networks:
-      - mq
+      - waf-network
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -26,7 +26,7 @@ services:
     depends_on:
       - zookeeper
     networks:
-      - mq
+      - waf-network
 
   kafka-ui:
     image: provectuslabs/kafka-ui
@@ -42,7 +42,7 @@ services:
       - kafka
       - zookeeper
     networks:
-      - mq
+      - waf-network
 
   producer:
     build:
@@ -53,19 +53,17 @@ services:
     ports:
       - "8001:8000"
     networks:
-      - mq
+      - waf-network
 
-  consumer:
+  detection:
     build:
-      context: .
-      dockerfile: ./consumer/Dockerfile
-    container_name: consumer
+      context: ./detection
+      dockerfile: ./detection/Dockerfile
+    container_name: detection
     restart: unless-stopped
-    ports:
-      - "8002:8000"
     networks:
-      - mq
+      - waf-network
 
 networks:
-  mq:
+  waf-network:
       driver: bridge
