@@ -9,6 +9,7 @@ RUN go build -o app ./cmd/detection/detection.go
 FROM alpine
 
 WORKDIR /app
+COPY ./config ./config
 COPY --from=builder /build/app /app/app
 
 CMD ["./app"]
