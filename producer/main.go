@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/IBM/sarama"
 	"log"
@@ -21,9 +22,15 @@ func main() {
 	defer producer.Close()
 
 	for {
+		type message struct {
+			Ip string `json:"ip"`
+		}
+
+		marshalled, _ := json.Marshal(message{Ip: "12345"})
+
 		msg := &sarama.ProducerMessage{
-			Topic: "test",
-			Value: sarama.StringEncoder("Hello, World!"),
+			Topic: "detection",
+			Value: sarama.StringEncoder(marshalled),
 		}
 
 		partition, offset, err := producer.SendMessage(msg)
