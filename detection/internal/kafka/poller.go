@@ -15,6 +15,7 @@ type Poller struct {
 	log    *slog.Logger
 	client sarama.ConsumerGroup
 	topic  string
+	saver  FingerprintSaver
 }
 
 func MustCreate(
@@ -22,8 +23,9 @@ func MustCreate(
 	host string,
 	port int,
 	topic string,
+	saver FingerprintSaver,
 ) *Poller {
-	poller, err := New(log, host, port, topic)
+	poller, err := New(log, host, port, topic, saver)
 	if err != nil {
 		panic(err)
 	}
@@ -35,6 +37,7 @@ func New(
 	host string,
 	port int,
 	topic string,
+	saver FingerprintSaver,
 ) (*Poller, error) {
 	client, err := newConsumerGroup(host, port)
 
@@ -46,18 +49,18 @@ func New(
 		log:    log,
 		client: client,
 		topic:  topic,
+		saver:  saver,
 	}, nil
 }
 
 // Poll consumes messages and saves
 func (p *Poller) Poll(
 	ctx context.Context,
-	saver FingerprintSaver,
 ) {
 	const op = "kafka.Poll"
 	log := p.log.With(slog.String("op", op))
 
-	handler := newConsumerHandler(ctx, log, saver)
+	handler := newConsumerHandler(ctx, log, p.saver)
 
 	for {
 		err := p.client.Consume(ctx, []string{p.topic}, handler)

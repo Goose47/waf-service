@@ -8,9 +8,13 @@ import (
 
 type Config struct {
 	Env   string      `yaml:"env"`
-	Port  int         `yaml:"port"`
+	GRPC  GRPCConfig  `yaml:"grpc"`
 	Redis RedisConfig `yaml:"redis"`
 	Kafka KafkaConfig `yaml:"kafka"`
+}
+
+type GRPCConfig struct {
+	Port int `yaml:"port"`
 }
 
 type RedisConfig struct {

@@ -8,7 +8,7 @@ import (
 )
 
 type FingerprintSaver interface {
-	Save(ctx context.Context, ip string) error
+	SaveIP(ctx context.Context, ip string) error
 }
 
 type consumerHandler struct {
@@ -66,7 +66,7 @@ func (h *consumerHandler) ConsumeClaim(
 
 		log.Info("saving message")
 
-		err = h.fingerprintSaver.Save(h.ctx, parsedMessage.Ip)
+		err = h.fingerprintSaver.SaveIP(h.ctx, parsedMessage.Ip)
 		if err != nil {
 			log.Error("failed to save message", slog.Any("error", err))
 			continue
