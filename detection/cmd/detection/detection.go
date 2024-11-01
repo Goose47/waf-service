@@ -1,4 +1,4 @@
-package detection
+package main
 
 import (
 	"context"
@@ -17,7 +17,7 @@ import (
 )
 
 func main() {
-	cfg := config.MustLoadPath(".env")
+	cfg := config.MustLoadPath("./config/local.yaml")
 
 	log := logger.New(cfg.Env)
 
