@@ -68,7 +68,7 @@ func (h *consumerHandler) ConsumeClaim(
 
 		err = h.fingerprintSaver.Save(h.ctx, parsedMessage.Ip)
 		if err != nil {
-			log.Error("failed to unmarshal message", slog.Any("error", err))
+			log.Error("failed to save message", slog.Any("error", err))
 			continue
 		}
 
