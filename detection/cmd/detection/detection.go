@@ -32,7 +32,7 @@ func main() {
 		application.GRPCServer.MustRun()
 	}()
 	go func() {
-		application.Poller.Poll(ctx)
+		application.Poller.MustPoll(ctx)
 	}()
 
 	sigs := make(chan os.Signal, 1)

@@ -13,9 +13,11 @@ import (
 
 type Poller struct {
 	log    *slog.Logger
-	client sarama.ConsumerGroup
+	host   string
+	port   int
 	topic  string
 	saver  FingerprintSaver
+	client sarama.ConsumerGroup
 }
 
 func MustCreate(
@@ -39,26 +41,27 @@ func New(
 	topic string,
 	saver FingerprintSaver,
 ) (*Poller, error) {
-	client, err := newConsumerGroup(host, port)
-
-	if err != nil {
-		return nil, fmt.Errorf("failed to create consumer group: %w", err)
-	}
-
 	return &Poller{
-		log:    log,
-		client: client,
-		topic:  topic,
-		saver:  saver,
+		log:   log,
+		host:  host,
+		port:  port,
+		topic: topic,
+		saver: saver,
 	}, nil
 }
 
-// Poll consumes messages and saves
-func (p *Poller) Poll(
+// MustPoll creates consumer group, panics on error then consumes messages and saves fingerprints
+func (p *Poller) MustPoll(
 	ctx context.Context,
 ) {
 	const op = "kafka.Poll"
 	log := p.log.With(slog.String("op", op))
+
+	client, err := newConsumerGroup(p.host, p.port)
+	if err != nil {
+		log.Error("failed to create consumer group", slog.Any("error", err))
+	}
+	p.client = client
 
 	handler := newConsumerHandler(ctx, log, p.saver)
 
