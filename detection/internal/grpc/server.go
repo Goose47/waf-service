@@ -2,7 +2,6 @@ package detectiongrpc
 
 import (
 	"context"
-	"fmt"
 	gen "github.com/Goose47/wafpb/gen/go/detection"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -27,7 +26,7 @@ func (s *serverAPI) CheckIP(
 	in *gen.CheckIPRequest,
 ) (*gen.CheckIPResponse, error) {
 	if in.Ip == "" {
-		return nil, fmt.Errorf("ip is required")
+		return nil, status.Error(codes.InvalidArgument, "ip is required")
 	}
 
 	isSuspicious, err := s.detection.CheckIP(ctx, in.Ip)
