@@ -31,7 +31,7 @@ func (s *serverAPI) CheckIP(
 
 	isSuspicious, err := s.detection.CheckIP(ctx, in.Ip)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to retrieve files")
+		return nil, status.Error(codes.Internal, "failed to check ip")
 	}
 
 	return &gen.CheckIPResponse{
