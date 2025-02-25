@@ -52,14 +52,12 @@ services:
     networks:
       - waf-network
 
-  producer:
+  analyser:
     build:
-      context: ./producer
+      context: ./analyser
       dockerfile: ./Dockerfile
-    container_name: producer
+    container_name: analyser
     restart: unless-stopped
-    ports:
-      - "8001:8000"
     depends_on:
       - kafka
     networks:
