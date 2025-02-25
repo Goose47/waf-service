@@ -75,6 +75,19 @@ services:
     networks:
       - waf-network
 
+  waf:
+    build:
+      context: ./waf
+      dockerfile: ./Dockerfile
+    container_name: waf
+    restart: unless-stopped
+    depends_on:
+      - kafka
+      - analyser
+      - detection
+    networks:
+      - waf-network
+
 networks:
   waf-network:
       driver: bridge
