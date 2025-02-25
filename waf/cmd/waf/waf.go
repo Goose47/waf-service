@@ -16,9 +16,13 @@ func main() {
 	application := app.New(
 		log,
 		cfg.GRPC.Port,
+		cfg.Detection.Host,
+		cfg.Detection.Port,
+		cfg.Analyzer.Host,
+		cfg.Analyzer.Port,
 		cfg.Kafka.Host,
 		cfg.Kafka.Port,
-		cfg.Kafka.Topic,
+		cfg.Kafka.AnalyzerTopic,
 	)
 
 	go func() {
@@ -31,6 +35,7 @@ func main() {
 	<-sigs
 
 	application.GRPCServer.Stop()
+	_ = application.Producer.Close()
 
 	log.Info("gracefully stopped")
 }

@@ -25,6 +25,7 @@ func (s *serverAPI) Analyze(
 	ctx context.Context,
 	in *gen.AnalyzeRequest,
 ) (*gen.AnalyzeResponse, error) {
+	//todo add missing parameters
 	if in.Ip == "" {
 		return nil, status.Error(codes.InvalidArgument, "ip is required")
 	}

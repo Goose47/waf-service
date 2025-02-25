@@ -3,8 +3,8 @@ package dto
 import gen "github.com/Goose47/wafpb/gen/go/analyzer"
 
 type HTTPParam struct {
-	Key   string
-	Value string
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 type HTTPRequest struct {

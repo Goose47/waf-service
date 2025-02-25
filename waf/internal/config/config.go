@@ -7,9 +7,11 @@ import (
 )
 
 type Config struct {
-	Env   string      `yaml:"env"`
-	GRPC  GRPCConfig  `yaml:"grpc"`
-	Kafka KafkaConfig `yaml:"kafka"`
+	Env       string          `yaml:"env"`
+	GRPC      GRPCConfig      `yaml:"grpc"`
+	Kafka     KafkaConfig     `yaml:"kafka"`
+	Detection DetectionConfig `yaml:"detection"`
+	Analyzer  AnalyzerConfig  `yaml:"analyzer"`
 }
 
 type GRPCConfig struct {
@@ -17,9 +19,19 @@ type GRPCConfig struct {
 }
 
 type KafkaConfig struct {
-	Host  string `yaml:"host"`
-	Port  int    `yaml:"port"`
-	Topic string `yaml:"topic"`
+	Host          string `yaml:"host"`
+	Port          int    `yaml:"port"`
+	AnalyzerTopic string `yaml:"analyzer_topic"`
+}
+
+type DetectionConfig struct {
+	Host string `yaml:"host"`
+	Port int    `yaml:"port"`
+}
+
+type AnalyzerConfig struct {
+	Host string `yaml:"host"`
+	Port int    `yaml:"port"`
 }
 
 // MustLoadPath loads config from configPath and panics on any errors

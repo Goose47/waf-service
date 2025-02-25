@@ -11,32 +11,32 @@ import (
 	"strconv"
 )
 
-type Detection struct {
+type DetectionService struct {
 	log    *slog.Logger
 	client gen.DetectionClient
 }
 
-func NewDetection(
+func MustCreateDetectionService(
 	log *slog.Logger,
 	host string,
 	port int,
-) (*Detection, error) {
+) *DetectionService {
 	gRPCAddress := net.JoinHostPort(host, strconv.Itoa(port))
 	cc, err := grpc.NewClient(gRPCAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		return nil, fmt.Errorf("failed to connect to grpc server: %v", err)
+		panic(fmt.Errorf("failed to connect to grpc server: %v", err))
 	}
 
 	client := gen.NewDetectionClient(cc)
 
-	return &Detection{
+	return &DetectionService{
 		log:    log,
 		client: client,
-	}, nil
+	}
 }
 
-func (d *Detection) IsSuspicious(ctx context.Context, ip string) (bool, error) {
-	const op = "services.detection.IsSuspicous"
+func (d *DetectionService) IsSuspicious(ctx context.Context, ip string) (bool, error) {
+	const op = "services.detection.IsSuspicious"
 	log := d.log.With(slog.String("op", op), slog.String("ip", ip))
 
 	log.Info("checking ip")

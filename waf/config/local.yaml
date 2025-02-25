@@ -1,11 +1,13 @@
 env: "local"
 grpc:
   port: 8000
-redis:
-  host: "redis"
-  port: 6379
-  pass: ""
 kafka:
   host: "kafka"
   port: 29092
-  topic: "detection"
+  analyzer_topic: "analyzer"
+detection:
+  host: "detection"
+  port: 8000
+analyzer:
+  host: "analyzer"
+  port: 8000
