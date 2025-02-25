@@ -1,0 +1,8 @@
+env: "local"
+grpc:
+  port: 8000
+kafka:
+  host: "kafka"
+  port: 29092
+  topic: "analyzer"
+  detection_topic: "detection"
