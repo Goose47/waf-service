@@ -1,6 +1,7 @@
 package dto
 
 import gen "github.com/Goose47/wafpb/gen/go/waf"
+import analyzegen "github.com/Goose47/wafpb/gen/go/analyzer"
 
 type HTTPParam struct {
 	Key   string `json:"key"`
@@ -54,8 +55,8 @@ func fillDTOParams(params []*gen.AnalyzeRequest_HTTPParam, reqParams []*HTTPPara
 }
 
 // ToAnalyzeRequest is a factory method for creating grpc request from DTO.
-func (req *HTTPRequest) ToAnalyzeRequest() *gen.AnalyzeRequest {
-	res := &gen.AnalyzeRequest{
+func (req *HTTPRequest) ToAnalyzeRequest() *analyzegen.AnalyzeRequest {
+	res := &analyzegen.AnalyzeRequest{
 		ClientIp:   req.ClientIP,
 		ClientPort: req.ClientPort,
 		ServerIp:   req.ServerIP,
@@ -65,21 +66,21 @@ func (req *HTTPRequest) ToAnalyzeRequest() *gen.AnalyzeRequest {
 		Proto:      req.Proto,
 	}
 
-	res.Headers = make([]*gen.AnalyzeRequest_HTTPParam, len(req.Headers))
+	res.Headers = make([]*analyzegen.AnalyzeRequest_HTTPParam, len(req.Headers))
 	fillParams(res.Headers, req.Headers)
 
-	res.QueryParams = make([]*gen.AnalyzeRequest_HTTPParam, len(req.QueryParams))
+	res.QueryParams = make([]*analyzegen.AnalyzeRequest_HTTPParam, len(req.QueryParams))
 	fillParams(res.QueryParams, req.QueryParams)
 
-	res.BodyParams = make([]*gen.AnalyzeRequest_HTTPParam, len(req.BodyParams))
+	res.BodyParams = make([]*analyzegen.AnalyzeRequest_HTTPParam, len(req.BodyParams))
 	fillParams(res.BodyParams, req.BodyParams)
 
 	return res
 }
 
-func fillParams(params []*gen.AnalyzeRequest_HTTPParam, reqParams []*HTTPParam) {
+func fillParams(params []*analyzegen.AnalyzeRequest_HTTPParam, reqParams []*HTTPParam) {
 	for i, param := range reqParams {
-		params[i] = &gen.AnalyzeRequest_HTTPParam{
+		params[i] = &analyzegen.AnalyzeRequest_HTTPParam{
 			Key:   param.Key,
 			Value: param.Value,
 		}
