@@ -8,56 +8,45 @@ type HTTPParam struct {
 }
 
 type HTTPRequest struct {
-	ClientIP    string      `json:"client_ip"`
-	ClientPort  string      `json:"client_port"`
-	ServerIP    string      `json:"server_ip"`
-	ServerPort  string      `json:"server_port"`
-	URI         string      `json:"uri"`
-	Method      string      `json:"method"`
-	Proto       string      `json:"proto"`
-	Headers     []HTTPParam `json:"headers"`
-	QueryParams []HTTPParam `json:"query_params"`
-	BodyParams  []HTTPParam `json:"body_params"`
+	ClientIP    string       `json:"client_ip"`
+	ClientPort  string       `json:"client_port"`
+	ServerIP    string       `json:"server_ip"`
+	ServerPort  string       `json:"server_port"`
+	URI         string       `json:"uri"`
+	Method      string       `json:"method"`
+	Proto       string       `json:"proto"`
+	Headers     []*HTTPParam `json:"headers"`
+	QueryParams []*HTTPParam `json:"query_params"`
+	BodyParams  []*HTTPParam `json:"body_params"`
 }
 
-func NewHTTPRequest(
-	clientIP string,
-	clientPort string,
-	serverIP string,
-	serverPort string,
-	URI string,
-	method string,
-	proto string,
-	headers []*gen.AnalyzeRequest_HTTPParam,
-	queryParams []*gen.AnalyzeRequest_HTTPParam,
-	bodyParams []*gen.AnalyzeRequest_HTTPParam,
-) *HTTPRequest {
-	req := &HTTPRequest{
-		ClientIP:   clientIP,
-		ClientPort: clientPort,
-		ServerIP:   serverIP,
-		ServerPort: serverPort,
-		URI:        URI,
-		Method:     method,
-		Proto:      proto,
+// NewHTTPRequest is a factory function for creating DTO from grpc request.
+func NewHTTPRequest(req *gen.AnalyzeRequest) *HTTPRequest {
+	res := &HTTPRequest{
+		ClientIP:   req.ClientIp,
+		ClientPort: req.ClientPort,
+		ServerIP:   req.ServerIp,
+		ServerPort: req.ServerPort,
+		URI:        req.Uri,
+		Method:     req.Method,
+		Proto:      req.Proto,
 	}
 
-	req.Headers = make([]HTTPParam, len(headers))
-	fillParams(headers, req.Headers)
+	res.Headers = make([]*HTTPParam, len(req.Headers))
+	fillDTOParams(req.Headers, res.Headers)
 
-	req.QueryParams = make([]HTTPParam, len(queryParams))
-	fillParams(queryParams, req.QueryParams)
+	res.QueryParams = make([]*HTTPParam, len(req.QueryParams))
+	fillDTOParams(req.QueryParams, res.QueryParams)
 
-	req.BodyParams = make([]HTTPParam, len(bodyParams))
-	fillParams(bodyParams, req.BodyParams)
+	res.BodyParams = make([]*HTTPParam, len(req.BodyParams))
+	fillDTOParams(req.BodyParams, res.BodyParams)
 
-	return req
+	return res
 }
 
-func fillParams(params []*gen.AnalyzeRequest_HTTPParam, reqParams []HTTPParam) {
-	reqParams = make([]HTTPParam, len(params))
+func fillDTOParams(params []*gen.AnalyzeRequest_HTTPParam, reqParams []*HTTPParam) {
 	for i, param := range params {
-		reqParams[i] = HTTPParam{
+		reqParams[i] = &HTTPParam{
 			Key:   param.Key,
 			Value: param.Value,
 		}

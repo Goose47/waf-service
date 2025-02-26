@@ -51,23 +51,9 @@ func (s *serverAPI) Analyze(
 		return nil, status.Error(codes.InvalidArgument, "http protocol message is required")
 	}
 
-	dto := dtopkg.NewHTTPRequest(
-		in.ClientIp,
-		in.ClientPort,
-		in.ServerIp,
-		in.ServerPort,
-		in.Uri,
-		in.Method,
-		in.Proto,
-		in.Headers,
-		in.QueryParams,
-		in.BodyParams,
-	)
+	dto := dtopkg.NewHTTPRequest(in)
 
-	isAttack, err := s.analyzer.Analyze(
-		ctx,
-		dto,
-	)
+	isAttack, err := s.analyzer.Analyze(ctx, dto)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to check ip")
 	}
