@@ -52,14 +52,18 @@ services:
     networks:
       - waf-network
 
-  analyser:
+  waf:
     build:
-      context: ./analyser
+      context: ./waf
       dockerfile: ./Dockerfile
-    container_name: analyser
+    container_name: waf
     restart: unless-stopped
+    ports:
+      - "8000:8000"
     depends_on:
       - kafka
+      - analyser
+      - detection
     networks:
       - waf-network
 
@@ -69,22 +73,24 @@ services:
       dockerfile: ./Dockerfile
     container_name: detection
     restart: unless-stopped
+    ports:
+      - "8001:8000"
     depends_on:
       - kafka
       - redis
     networks:
       - waf-network
 
-  waf:
+  analyser:
     build:
-      context: ./waf
+      context: ./analyser
       dockerfile: ./Dockerfile
-    container_name: waf
+    container_name: analyser
     restart: unless-stopped
+    ports:
+      - "8002:8000"
     depends_on:
       - kafka
-      - analyser
-      - detection
     networks:
       - waf-network
 
