@@ -62,7 +62,7 @@ services:
       - "8000:8000"
     depends_on:
       - kafka
-      - analyser
+      - analyzer
       - detection
     networks:
       - waf-network
@@ -81,11 +81,11 @@ services:
     networks:
       - waf-network
 
-  analyser:
+  analyzer:
     build:
-      context: ./analyser
+      context: ./analyzer
       dockerfile: ./Dockerfile
-    container_name: analyser
+    container_name: analyzer
     restart: unless-stopped
     ports:
       - "8002:8000"
