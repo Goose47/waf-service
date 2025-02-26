@@ -29,19 +29,19 @@ func (s *serverAPI) Analyze(
 	ctx context.Context,
 	in *gen.AnalyzeRequest,
 ) (*gen.AnalyzeResponse, error) {
-	if in.ClientIP == "" {
+	if in.ClientIp == "" {
 		return nil, status.Error(codes.InvalidArgument, "client ip is required")
 	}
 	if in.ClientPort == "" {
 		return nil, status.Error(codes.InvalidArgument, "client port is required")
 	}
-	if in.ServerIP == "" {
+	if in.ServerIp == "" {
 		return nil, status.Error(codes.InvalidArgument, "server ip is required")
 	}
 	if in.ServerPort == "" {
 		return nil, status.Error(codes.InvalidArgument, "server port is required")
 	}
-	if in.URI == "" {
+	if in.Uri == "" {
 		return nil, status.Error(codes.InvalidArgument, "uri is required")
 	}
 	if in.Method == "" {
@@ -52,11 +52,11 @@ func (s *serverAPI) Analyze(
 	}
 
 	dto := dtopkg.NewHTTPRequest(
-		in.ClientIP,
+		in.ClientIp,
 		in.ClientPort,
-		in.ServerIP,
+		in.ServerIp,
 		in.ServerPort,
-		in.URI,
+		in.Uri,
 		in.Method,
 		in.Proto,
 		in.Headers,
