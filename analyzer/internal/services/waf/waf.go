@@ -73,13 +73,25 @@ func (waf *WAF) Analyze(ctx context.Context, request *dtopkg.HTTPRequest) (bool,
 		return true, nil
 	}
 
+	// todo: maybe accept []byte as body?
+	// Content-Type is important to tell coraza which BodyProcessor must be used
+	//tx.AddRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+	//tx.AddRequestHeader("Content-Type", "application/json")
+	//res, _ := io.ReadAll(r.Body)
+	//_, _, err = tx.WriteRequestBody(res)
+
 	// Fill POST parameters
 	for _, param := range request.QueryParams {
 		tx.AddPostRequestArgument(param.Key, param.Value)
 	}
 
 	// Process phase 2
-	if it := tx.ProcessRequestHeaders(); it != nil {
+	it, err := tx.ProcessRequestBody()
+	if err != nil {
+		log.Error("process request body", slog.Any("error", err))
+		return false, fmt.Errorf("%s: %w", op, err)
+	}
+	if it != nil {
 		log.Warn("Attack is found", slog.Int("rule_id", it.RuleID))
 		return true, nil
 	}
