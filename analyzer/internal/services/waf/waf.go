@@ -15,10 +15,11 @@ type WAF struct {
 }
 
 func MustCreate(log *slog.Logger) *WAF {
+	// todo: move paths to config
 	cfg := coraza.NewWAFConfig().
-		WithDirectivesFromFile("secrules/coraza.conf").
-		WithDirectivesFromFile("secrules/coreruleset/crs-setup.conf.example").
-		WithDirectivesFromFile("secrules/coreruleset/rules/*.conf").
+		WithDirectivesFromFile("/app/secrules/coraza.conf").
+		WithDirectivesFromFile("/app/secrules/coreruleset/crs-setup.conf").
+		WithDirectivesFromFile("/app/secrules/coreruleset/rules/*.conf").
 		WithDirectives(`
 			SecRuleEngine On
 		`)
