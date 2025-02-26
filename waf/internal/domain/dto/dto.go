@@ -22,11 +22,11 @@ type HTTPRequest struct {
 
 func (req *HTTPRequest) ToAnalyzeRequest() *gen.AnalyzeRequest {
 	res := &gen.AnalyzeRequest{
-		ClientIP:   req.ClientIP,
+		ClientIp:   req.ClientIP,
 		ClientPort: req.ClientPort,
-		ServerIP:   req.ServerIP,
+		ServerIp:   req.ServerIP,
 		ServerPort: req.ServerPort,
-		URI:        req.URI,
+		Uri:        req.URI,
 		Method:     req.Method,
 		Proto:      req.Proto,
 	}
