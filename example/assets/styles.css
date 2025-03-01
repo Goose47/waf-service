@@ -1,0 +1,87 @@
+input {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;
+}
+.page {
+    display: flex;
+    position: absolute;
+    width: 70%;
+    height: 80%;
+}
+.page > div {
+    flex: 1;
+}
+.page > table {
+    flex: 1;
+}
+.card {
+    padding: 1.5rem;
+    margin: 0.25rem;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+.attacks-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+.attacks-container__attack {
+    width: 50%;
+}
+.attack__header {
+    text-align: center;
+}
+.attack-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+}
+.attack-form__input {
+    height: 1.5rem;
+}
+.attack-form__button {
+    height: 1.5rem;
+    background-color: #66D2CE;
+    border: 1px solid;
+}
+
+.attacks-table {
+    border: 1px solid;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.attacks-table__cell {
+    text-align: center;
+    padding: 0.25rem;
+    border: 1px solid;
+    border-collapse: collapse;
+}
+
+input[type='checkbox'] {
+    accent-color: #66D2CE;
+}
+.text-success {
+    color: #66D2CE;
+}
+.text-fail {
+    color: #c8326f;
+}
+.bg-success {
+    background-color: #66D2CE;
+}
+.bg-fail {
+    background-color: #c8326f;
+}

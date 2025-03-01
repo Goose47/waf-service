@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>WAF Test</title>
+</head>
+<body>
+  <div class="page">
+    <div>
+      <div class="card">
+        <h1>WAF is <span id="title"></span></h1>
+        <label>
+          Enable WAF
+          <input type="checkbox" id="waf-checkbox">
+        </label>
+      </div>
+
+      <div class="card">
+        <h2 id="last-parameter"></h2>
+      </div>
+
+      <div class="attacks-container">
+        <div class="attacks-container__attack card">
+          <h2 class="attack__header">SQL injection</h2>
+          <div class="attack-form">
+            <label>Post parameter</label>
+            <input class="attack-form__input" id="sqli-param" type="text" value="' OR 1=1; DROP TABLE users; --" placeholder="Username">
+            <button class="attack-form__button" id="sqli-submit">Submit</button>
+          </div>
+        </div>
+        <div class="attacks-container__attack card">
+          <h2 class="attack__header">XSS Attack</h2>
+          <div class="attack-form">
+            <label>Query parameter</label>
+            <input class="attack-form__input" id="xss-param" type="text" value="alert('XSS!')" placeholder="Username">
+            <button class="attack-form__button" id="xss-submit">Go</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Request history</h2>
+      <table id="request-table" class="attacks-table">
+        <thead>
+        <tr>
+          <th style="width:10%" class="attacks-table__cell">Method</th>
+          <th style="width:40%" class="attacks-table__cell">URI</th>
+          <th style="width:40%" class="attacks-table__cell">Parameter</th>
+          <th style="width:10%" class="attacks-table__cell">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
