@@ -83,7 +83,7 @@ func (waf *WAF) Analyze(ctx context.Context, request *dtopkg.HTTPRequest) (bool,
 
 	// Fill POST parameters
 	body := make([]byte, 0)
-	for _, param := range request.QueryParams {
+	for _, param := range request.BodyParams {
 		body = append(body, param.Key...)
 		body = append(body, "="...)
 		body = append(body, param.Value...)
