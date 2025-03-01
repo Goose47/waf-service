@@ -69,7 +69,7 @@ func (waf *WAF) Analyze(ctx context.Context, request *dtopkg.HTTPRequest) (bool,
 
 	// Process phase 1
 	if it := tx.ProcessRequestHeaders(); it != nil {
-		log.Warn("Attack is found", slog.Int("rule_id", it.RuleID))
+		log.Warn("Attack is found in phase 1", slog.Int("rule_id", it.RuleID))
 		return true, nil
 	}
 
@@ -92,7 +92,7 @@ func (waf *WAF) Analyze(ctx context.Context, request *dtopkg.HTTPRequest) (bool,
 		return false, fmt.Errorf("%s: %w", op, err)
 	}
 	if it != nil {
-		log.Warn("Attack is found", slog.Int("rule_id", it.RuleID))
+		log.Warn("Attack is found in phase 2", slog.Int("rule_id", it.RuleID))
 		return true, nil
 	}
 
