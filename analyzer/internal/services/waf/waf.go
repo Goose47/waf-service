@@ -74,12 +74,8 @@ func (waf *WAF) Analyze(ctx context.Context, request *dtopkg.HTTPRequest) (bool,
 		return true, nil
 	}
 
-	// todo: maybe accept []byte as body?
-	// Content-Type is important to tell coraza which BodyProcessor must be used
-	//tx.AddRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-	//tx.AddRequestHeader("Content-Type", "application/json")
-	//res, _ := io.ReadAll(r.Body)
-	//_, _, err = tx.WriteRequestBody(res)
+	// Fake payload content-type
+	tx.AddRequestHeader("Content-Type", "application/x-www-form-urlencoded")
 
 	// Fill POST parameters
 	body := make([]byte, 0)
