@@ -1,6 +1,7 @@
 package waf
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"github.com/corazawaf/coraza/v3"
@@ -81,12 +82,35 @@ func (waf *WAF) Analyze(ctx context.Context, request *dtopkg.HTTPRequest) (bool,
 	//_, _, err = tx.WriteRequestBody(res)
 
 	// Fill POST parameters
+	body := make([]byte, 0)
 	for _, param := range request.QueryParams {
 		tx.AddPostRequestArgument(param.Key, param.Value)
+		body = append(body, param.Key...)
+		body = append(body, "="...)
+		body = append(body, param.Value...)
+		body = append(body, "&"...)
+	}
+	body = bytes.TrimSuffix(body, []byte("&"))
+
+	it, _, err := tx.WriteRequestBody(body)
+
+	if err != nil {
+		log.Error("failed to write request body", slog.Any("error", err))
+		return false, fmt.Errorf("%s: %w", op, err)
+	}
+	if it != nil {
+		log.Warn(
+			"interrupted while writing request body",
+			slog.Int("rule_id", it.RuleID),
+			slog.String("data", it.Data),
+			slog.String("action", it.Action),
+			slog.Int("status", it.Status),
+		)
+		return true, nil
 	}
 
 	// Process phase 2
-	it, err := tx.ProcessRequestBody()
+	it, err = tx.ProcessRequestBody()
 	if err != nil {
 		log.Error("process request body", slog.Any("error", err))
 		return false, fmt.Errorf("%s: %w", op, err)
