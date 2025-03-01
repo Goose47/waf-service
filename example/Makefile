@@ -6,7 +6,7 @@ build:
 	docker image ls | grep waf-example
 
 run:
-	@docker run -p "8080:8080" -d --name "waf-example" waf-example && \
+	@docker run -p "8080:8000" -d --name "waf-example" waf-example && \
 	docker ps | head -n 1 && \
 	docker ps | grep waf-example
 
