@@ -87,7 +87,7 @@ func (s *AnalyzerService) Publish(ctx context.Context, dto *dtopkg.HTTPRequest) 
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
-	log.Info("sent message to partition %d at offset %d\n", partition, offset)
+	log.Info(fmt.Sprintf("sent message to partition %d at offset %d\n", partition, offset))
 	log.Info("http request published successfully")
 
 	return nil

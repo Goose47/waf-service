@@ -63,7 +63,7 @@ func (s *PublisherService) Publish(
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
-	log.Info("sent message to partition %d at offset %d\n", partition, offset)
+	log.Info(fmt.Sprintf("sent message to partition %d at offset %d\n", partition, offset))
 	log.Info("ip published successfully")
 
 	return nil
