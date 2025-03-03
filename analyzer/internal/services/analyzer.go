@@ -1,3 +1,4 @@
+// Package services contains application service layer logic.
 package services
 
 import (
@@ -14,12 +15,14 @@ type publisher interface {
 	Publish(ctx context.Context, ip string) error
 }
 
+// AnalyzerService contains request analyze business logic.
 type AnalyzerService struct {
 	log       *slog.Logger
 	analyzer  analyzer
 	publisher publisher
 }
 
+// NewAnalyzerService is a constructor for AnalyzerService.
 func NewAnalyzerService(
 	log *slog.Logger,
 	analyzer analyzer,

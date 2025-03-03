@@ -1,3 +1,4 @@
+// Package kafka contains functions to consume and process kafka messages.
 package kafka
 
 import (
@@ -11,21 +12,23 @@ import (
 	"waf-analyzer/internal/lib/random"
 )
 
+// Poller listens for new kafka messages and processed them.
 type Poller struct {
+	analyzer analyzer
+	client   sarama.ConsumerGroup
 	log      *slog.Logger
 	host     string
-	port     int
 	topic    string
-	analyzer Analyzer
-	client   sarama.ConsumerGroup
+	port     int
 }
 
+// MustCreate creates new Poller and panics on error.
 func MustCreate(
 	log *slog.Logger,
 	host string,
 	port int,
 	topic string,
-	analyzer Analyzer,
+	analyzer analyzer,
 ) *Poller {
 	poller, err := New(log, host, port, topic, analyzer)
 	if err != nil {
@@ -34,12 +37,13 @@ func MustCreate(
 	return poller
 }
 
+// New is a constructor for Poller.
 func New(
 	log *slog.Logger,
 	host string,
 	port int,
 	topic string,
-	analyzer Analyzer,
+	analyzer analyzer,
 ) (*Poller, error) {
 	return &Poller{
 		log:      log,
@@ -79,8 +83,9 @@ func (p *Poller) MustPoll(
 	}
 }
 
-func (p *Poller) Close() {
-	p.client.Close()
+// Close closes publisher.
+func (p *Poller) Close() error {
+	return fmt.Errorf("services.Publisher.Close: %w", p.client.Close())
 }
 
 func newConsumerGroup(

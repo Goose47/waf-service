@@ -1,12 +1,15 @@
+// Package dto contains DTOs used in service.
 package dto
 
 import gen "github.com/Goose47/wafpb/gen/go/analyzer"
 
+// HTTPParam represents incoming request key-value parameter.
 type HTTPParam struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
 }
 
+// HTTPRequest represents incoming request to analyze.
 type HTTPRequest struct {
 	ClientIP    string       `json:"client_ip"`
 	ClientPort  string       `json:"client_port"`

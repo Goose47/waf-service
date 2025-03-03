@@ -8,12 +8,14 @@ import (
 	"log/slog"
 )
 
+// PublisherService contains kafka publishing messages logic.
 type PublisherService struct {
 	log      *slog.Logger
 	producer sarama.SyncProducer
 	topic    string
 }
 
+// NewPublisherService is a constructor for PublisherService.
 func NewPublisherService(
 	log *slog.Logger,
 	producer sarama.SyncProducer,
@@ -26,14 +28,14 @@ func NewPublisherService(
 	}
 }
 
-// Close closes sarama producer
+// Close closes sarama producer.
 func (s *PublisherService) Close() error {
-	return s.producer.Close()
+	return fmt.Errorf("services.Publisher.Close: %w", s.producer.Close())
 }
 
 // Publish publishes attacker's ip to kafka.
 func (s *PublisherService) Publish(
-	ctx context.Context,
+	_ context.Context,
 	ip string,
 ) error {
 	const op = "services.PublisherService.Publish"
@@ -43,10 +45,10 @@ func (s *PublisherService) Publish(
 	log.Info("trying to publish attacker's ip")
 
 	type message struct {
-		Ip string `json:"ip"`
+		IP string `json:"ip"`
 	}
 
-	marshalled, err := json.Marshal(message{Ip: ip})
+	marshalled, err := json.Marshal(message{IP: ip})
 	if err != nil {
 		log.Error("failed to marshal message", slog.Any("error", err))
 		return fmt.Errorf("%s: %w", op, err)

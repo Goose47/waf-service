@@ -1,3 +1,4 @@
+// Package kafka contains sarama configuration logic.
 package kafka
 
 import (
@@ -8,20 +9,20 @@ import (
 	dtopkg "waf-analyzer/internal/domain/dto"
 )
 
-type Analyzer interface {
+type analyzer interface {
 	Analyze(ctx context.Context, dto *dtopkg.HTTPRequest) (bool, error)
 }
 
 type consumerHandler struct {
 	ctx      context.Context
 	log      *slog.Logger
-	analyzer Analyzer
+	analyzer analyzer
 }
 
 func newConsumerHandler(
 	ctx context.Context,
 	log *slog.Logger,
-	analyzer Analyzer,
+	analyzer analyzer,
 ) *consumerHandler {
 	return &consumerHandler{
 		ctx:      ctx,
@@ -30,13 +31,17 @@ func newConsumerHandler(
 	}
 }
 
+// Setup method exists to comply with sarama ConsumerGroupHandler interface.
 func (h *consumerHandler) Setup(sarama.ConsumerGroupSession) error {
 	return nil
 }
+
+// Cleanup method exists to comply with sarama ConsumerGroupHandler interface.
 func (h *consumerHandler) Cleanup(sarama.ConsumerGroupSession) error {
 	return nil
 }
 
+// ConsumeClaim consumes incoming messages, converts them to dtopkg.HTTPRequest and passes to analyzer.
 func (h *consumerHandler) ConsumeClaim(
 	sess sarama.ConsumerGroupSession,
 	claim sarama.ConsumerGroupClaim,

@@ -1,3 +1,4 @@
+// Package waf interacts with coraza API.
 package waf
 
 import (
@@ -10,13 +11,14 @@ import (
 	dtopkg "waf-analyzer/internal/domain/dto"
 )
 
+// WAF Loads coraza and provides facade to call coraza API.
 type WAF struct {
 	log *slog.Logger
 	waf coraza.WAF
 }
 
+// MustCreate creates WAF instance and panics on error.
 func MustCreate(log *slog.Logger) *WAF {
-	// todo: move paths to config
 	cfg := coraza.NewWAFConfig().
 		WithDirectivesFromFile("/app/secrules/coraza.conf").
 		WithDirectivesFromFile("/app/secrules/coreruleset/crs-setup.conf").
@@ -37,14 +39,19 @@ func MustCreate(log *slog.Logger) *WAF {
 }
 
 // Analyze indicates whether http request contains an attack.
-func (waf *WAF) Analyze(ctx context.Context, request *dtopkg.HTTPRequest) (bool, error) {
+func (waf *WAF) Analyze(_ context.Context, request *dtopkg.HTTPRequest) (bool, error) {
 	const op = "WAF.Analyze"
 	log := waf.log.With(slog.String("op", op))
 
 	log.Info("trying to analyze request")
 
 	tx := waf.waf.NewTransaction()
-	defer tx.Close()
+	defer func() {
+		err := tx.Close()
+		if err != nil {
+			log.Error(fmt.Sprintf("%s: failed to close transaction", op), slog.Any("error", err))
+		}
+	}()
 
 	clientPort, err := strconv.Atoi(request.ClientPort)
 	if err != nil {

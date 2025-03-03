@@ -1,3 +1,4 @@
+// Package grpcapp contains application server.
 package grpcapp
 
 import (
@@ -14,6 +15,7 @@ import (
 	"waf-analyzer/internal/services"
 )
 
+// App represents application gRPC server.
 type App struct {
 	log        *slog.Logger
 	gRPCServer *grpc.Server
@@ -56,21 +58,21 @@ func New(
 	}
 }
 
-// InterceptorLogger is a wrapper for slog to use in interceptor
+// InterceptorLogger is a wrapper for slog to use in interceptor.
 func InterceptorLogger(l *slog.Logger) logging.Logger {
 	return logging.LoggerFunc(func(ctx context.Context, level logging.Level, msg string, fields ...any) {
 		l.Log(ctx, slog.Level(level), msg, fields...)
 	})
 }
 
-// MustRun runs gRPC server and panics if any error occurs
+// MustRun runs gRPC server and panics if any error occurs.
 func (a *App) MustRun() {
 	if err := a.Run(); err != nil {
 		panic(err)
 	}
 }
 
-// Run runs gRPC server
+// Run runs gRPC server.
 func (a *App) Run() error {
 	const op = "grpcapp.Run"
 
@@ -88,6 +90,7 @@ func (a *App) Run() error {
 	return nil
 }
 
+// Stop stops gRPC server.
 func (a *App) Stop() {
 	const op = "grpcapp.Stop"
 

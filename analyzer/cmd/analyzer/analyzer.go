@@ -1,7 +1,9 @@
+// Package main runs the application.
 package main
 
 import (
 	"context"
+	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
@@ -40,8 +42,12 @@ func main() {
 
 	cancel()
 	application.GRPCServer.Stop()
-	application.Poller.Close()
-	_ = application.Producer.Close()
+	if err := application.Poller.Close(); err != nil {
+		log.Error("failed to close sarama poller", slog.Any("error", err))
+	}
+	if err := application.Producer.Close(); err != nil {
+		log.Error("failed to close sarama producer", slog.Any("error", err))
+	}
 
 	log.Info("gracefully stopped")
 }
