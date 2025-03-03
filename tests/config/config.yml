@@ -1,0 +1,9 @@
+analyzer:
+  host: "rwfshr.ru"
+  port: 8002
+detection:
+  host: "rwfshr.ru"
+  port: 8001
+waf:
+  host: "rwfshr.ru"
+  port: 8000
