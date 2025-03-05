@@ -1,3 +1,4 @@
+// Package logger contains methods to create base application logger.
 package logger
 
 import (
@@ -11,6 +12,7 @@ const (
 	envProd  = "prod"
 )
 
+// New creates main application logger.
 func New(env string) *slog.Logger {
 	var log *slog.Logger
 

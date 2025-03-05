@@ -1,3 +1,4 @@
+// Package kafka contains sarama configuration logic.
 package kafka
 
 import (
@@ -7,20 +8,20 @@ import (
 	"log/slog"
 )
 
-type FingerprintSaver interface {
+type fingerprintSaver interface {
 	SaveIP(ctx context.Context, ip string) error
 }
 
 type consumerHandler struct {
 	ctx              context.Context
 	log              *slog.Logger
-	fingerprintSaver FingerprintSaver
+	fingerprintSaver fingerprintSaver
 }
 
 func newConsumerHandler(
 	ctx context.Context,
 	log *slog.Logger,
-	saver FingerprintSaver,
+	saver fingerprintSaver,
 ) *consumerHandler {
 	return &consumerHandler{
 		ctx:              ctx,
@@ -29,17 +30,21 @@ func newConsumerHandler(
 	}
 }
 
+// Setup method exists to comply with sarama ConsumerGroupHandler interface.
 func (h *consumerHandler) Setup(sarama.ConsumerGroupSession) error {
 	return nil
 }
+
+// Cleanup method exists to comply with sarama ConsumerGroupHandler interface.
 func (h *consumerHandler) Cleanup(sarama.ConsumerGroupSession) error {
 	return nil
 }
 
 type message struct {
-	Ip string `json:"ip"`
+	IP string `json:"ip"`
 }
 
+// ConsumeClaim consumes incoming messages, retrieves IP's and passes to fingerprintSaver to save it in redis.
 func (h *consumerHandler) ConsumeClaim(
 	sess sarama.ConsumerGroupSession,
 	claim sarama.ConsumerGroupClaim,
@@ -62,11 +67,11 @@ func (h *consumerHandler) ConsumeClaim(
 			continue
 		}
 
-		log.Info("unmarshalled message", slog.String("ip", parsedMessage.Ip))
+		log.Info("unmarshalled message", slog.String("ip", parsedMessage.IP))
 
 		log.Info("saving message")
 
-		err = h.fingerprintSaver.SaveIP(h.ctx, parsedMessage.Ip)
+		err = h.fingerprintSaver.SaveIP(h.ctx, parsedMessage.IP)
 		if err != nil {
 			log.Error("failed to save message", slog.Any("error", err))
 			continue

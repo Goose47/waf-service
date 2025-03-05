@@ -11,11 +11,13 @@ import (
 	"strconv"
 )
 
+// DetectionService contains business logic related to detection service.
 type DetectionService struct {
 	log    *slog.Logger
 	client gen.DetectionClient
 }
 
+// MustCreateDetectionService is a constructor for DetectionService.
 func MustCreateDetectionService(
 	log *slog.Logger,
 	host string,
@@ -24,7 +26,7 @@ func MustCreateDetectionService(
 	gRPCAddress := net.JoinHostPort(host, strconv.Itoa(port))
 	cc, err := grpc.NewClient(gRPCAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		panic(fmt.Errorf("failed to connect to grpc server: %v", err))
+		panic(fmt.Errorf("failed to connect to grpc server: %w", err))
 	}
 
 	client := gen.NewDetectionClient(cc)
@@ -35,6 +37,7 @@ func MustCreateDetectionService(
 	}
 }
 
+// IsSuspicious calls detection service to check whether given ip is suspicious (has fingerprints).
 func (d *DetectionService) IsSuspicious(ctx context.Context, ip string) (bool, error) {
 	const op = "services.detection.IsSuspicious"
 	log := d.log.With(slog.String("op", op), slog.String("ip", ip))

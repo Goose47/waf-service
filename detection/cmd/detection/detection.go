@@ -1,7 +1,9 @@
+// Package main runs the application.
 package main
 
 import (
 	"context"
+	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
@@ -42,8 +44,12 @@ func main() {
 
 	cancel()
 	application.GRPCServer.Stop()
-	application.Poller.Close()
-	//todo close redis conn
+	if err := application.Poller.Close(); err != nil {
+		log.Error("failed to close kafka poller", slog.Any("error", err))
+	}
+	if err := application.Redis.Close(); err != nil {
+		log.Error("failed to close redis connection", slog.Any("error", err))
+	}
 
 	log.Info("gracefully stopped")
 }

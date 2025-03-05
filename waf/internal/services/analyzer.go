@@ -1,3 +1,4 @@
+// Package services contains application business logic.
 package services
 
 import (
@@ -14,6 +15,7 @@ import (
 	dtopkg "waf-waf/internal/domain/dto"
 )
 
+// AnalyzerService contains business logic related to analyzer service.
 type AnalyzerService struct {
 	log      *slog.Logger
 	client   gen.AnalyzerClient
@@ -21,6 +23,7 @@ type AnalyzerService struct {
 	topic    string
 }
 
+// MustCreateAnalyzerService is a constructor for AnalyzerService. Panics on error.
 func MustCreateAnalyzerService(
 	log *slog.Logger,
 	host string,
@@ -31,7 +34,7 @@ func MustCreateAnalyzerService(
 	gRPCAddress := net.JoinHostPort(host, strconv.Itoa(port))
 	cc, err := grpc.NewClient(gRPCAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		panic(fmt.Errorf("failed to connect to grpc server: %v", err))
+		panic(fmt.Errorf("failed to connect to grpc server: %w", err))
 	}
 
 	client := gen.NewAnalyzerClient(cc)
@@ -64,7 +67,7 @@ func (s *AnalyzerService) Analyze(ctx context.Context, dto *dtopkg.HTTPRequest) 
 }
 
 // Publish publishes given http request to be analyzed in background.
-func (s *AnalyzerService) Publish(ctx context.Context, dto *dtopkg.HTTPRequest) error {
+func (s *AnalyzerService) Publish(_ context.Context, dto *dtopkg.HTTPRequest) error {
 	const op = "services.AnalyzerService.Publish"
 	log := s.log.With(slog.String("op", op))
 

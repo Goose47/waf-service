@@ -1,3 +1,4 @@
+// Package redis provides API to interact with redis.
 package redis
 
 import (
@@ -9,11 +10,13 @@ import (
 	"strconv"
 )
 
+// Redis provides API to interact with redis.
 type Redis struct {
 	log    *slog.Logger
 	client *redislib.Client
 }
 
+// New is a constructor for Redis.
 func New(
 	log *slog.Logger,
 	host string,
@@ -31,12 +34,12 @@ func New(
 	}
 }
 
-// Close closes redis connection
-func (r *Redis) Close() {
-	r.client.Close()
+// Close closes redis connection.
+func (r *Redis) Close() error {
+	return fmt.Errorf("redis.Close: %w", r.client.Close())
 }
 
-// Fingerprint indicates whether given ip is present in redis
+// Fingerprint indicates whether given ip is present in redis.
 func (r *Redis) Fingerprint(ctx context.Context, ip string) (bool, error) {
 	const op = "storage.redis.Fingerprint"
 
@@ -57,7 +60,7 @@ func (r *Redis) Fingerprint(ctx context.Context, ip string) (bool, error) {
 	return res > 0, nil
 }
 
-// Save saves ip in redis
+// Save saves ip in redis.
 func (r *Redis) Save(ctx context.Context, ip string) error {
 	const op = "storage.redis.SetFingerprint"
 

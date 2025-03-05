@@ -1,6 +1,8 @@
+// Package main runs the application.
 package main
 
 import (
+	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
@@ -35,7 +37,9 @@ func main() {
 	<-sigs
 
 	application.GRPCServer.Stop()
-	_ = application.Producer.Close()
+	if err := application.Producer.Close(); err != nil {
+		log.Error("failed to close sarama producer", slog.Any("error", err))
+	}
 
 	log.Info("gracefully stopped")
 }

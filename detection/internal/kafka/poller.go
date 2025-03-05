@@ -1,3 +1,4 @@
+// Package kafka contains functions to consume and process kafka messages.
 package kafka
 
 import (
@@ -11,21 +12,23 @@ import (
 	"waf-detection/internal/lib/random"
 )
 
+// Poller listens for new kafka messages and processed them.
 type Poller struct {
+	saver  fingerprintSaver
+	client sarama.ConsumerGroup
 	log    *slog.Logger
 	host   string
-	port   int
 	topic  string
-	saver  FingerprintSaver
-	client sarama.ConsumerGroup
+	port   int
 }
 
+// MustCreate creates new Poller and panics on error.
 func MustCreate(
 	log *slog.Logger,
 	host string,
 	port int,
 	topic string,
-	saver FingerprintSaver,
+	saver fingerprintSaver,
 ) *Poller {
 	poller, err := New(log, host, port, topic, saver)
 	if err != nil {
@@ -34,12 +37,13 @@ func MustCreate(
 	return poller
 }
 
+// New is a constructor for Poller.
 func New(
 	log *slog.Logger,
 	host string,
 	port int,
 	topic string,
-	saver FingerprintSaver,
+	saver fingerprintSaver,
 ) (*Poller, error) {
 	return &Poller{
 		log:   log,
@@ -50,7 +54,7 @@ func New(
 	}, nil
 }
 
-// MustPoll creates consumer group, panics on error then consumes messages and saves fingerprints
+// MustPoll creates consumer group, panics on error then consumes messages and saves fingerprints.
 func (p *Poller) MustPoll(
 	ctx context.Context,
 ) {
@@ -79,8 +83,9 @@ func (p *Poller) MustPoll(
 	}
 }
 
-func (p *Poller) Close() {
-	p.client.Close()
+// Close closes consumer group.
+func (p *Poller) Close() error {
+	return fmt.Errorf("poller.Close: %w", p.client.Close())
 }
 
 func newConsumerGroup(

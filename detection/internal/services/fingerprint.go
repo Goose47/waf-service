@@ -1,3 +1,4 @@
+// Package services contains application business logic.
 package services
 
 import (
@@ -6,23 +7,25 @@ import (
 	"log/slog"
 )
 
-type FingerprintProvider interface {
+type fingerprintProvider interface {
 	Fingerprint(ctx context.Context, ip string) (bool, error)
 }
-type FingerprintSaver interface {
+type fingerprintSaver interface {
 	Save(ctx context.Context, ip string) error
 }
 
+// FingerprintService contains fingerprints business logic.
 type FingerprintService struct {
 	log                 *slog.Logger
-	fingerprintProvider FingerprintProvider
-	fingerprintSaver    FingerprintSaver
+	fingerprintProvider fingerprintProvider
+	fingerprintSaver    fingerprintSaver
 }
 
+// NewFingerprintService is a constructor for FingerprintService.
 func NewFingerprintService(
 	log *slog.Logger,
-	provider FingerprintProvider,
-	saver FingerprintSaver,
+	provider fingerprintProvider,
+	saver fingerprintSaver,
 ) *FingerprintService {
 	return &FingerprintService{
 		log:                 log,
@@ -31,7 +34,7 @@ func NewFingerprintService(
 	}
 }
 
-// CheckIP checks if ip is present in database
+// CheckIP checks if ip is present in database.
 func (s *FingerprintService) CheckIP(ctx context.Context, ip string) (bool, error) {
 	const op = "services.fingerprint.CheckIP"
 
@@ -39,7 +42,7 @@ func (s *FingerprintService) CheckIP(ctx context.Context, ip string) (bool, erro
 
 	log.Info("trying to check ip")
 
-	// ip is considered suspicious if it is present in db
+	// ip is considered suspicious if it is present in db.
 	res, err := s.fingerprintProvider.Fingerprint(ctx, ip)
 
 	if err != nil {
@@ -53,7 +56,7 @@ func (s *FingerprintService) CheckIP(ctx context.Context, ip string) (bool, erro
 	return res, nil
 }
 
-// SaveIP saves ip in database
+// SaveIP saves ip in database.
 func (s *FingerprintService) SaveIP(ctx context.Context, ip string) error {
 	const op = "services.fingerprint.SaveIP"
 
@@ -69,7 +72,7 @@ func (s *FingerprintService) SaveIP(ctx context.Context, ip string) error {
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
-	log.Info(fmt.Sprintf("ip saved successfully"))
+	log.Info("ip saved successfully")
 
 	return nil
 }

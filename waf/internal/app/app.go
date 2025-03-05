@@ -1,3 +1,4 @@
+// Package app provides functions to create application instance and run it.
 package app
 
 import (
@@ -8,11 +9,13 @@ import (
 	"waf-waf/internal/services"
 )
 
+// App represents application and contains all its dependencies.
 type App struct {
 	GRPCServer *grpcapp.App
 	Producer   sarama.SyncProducer
 }
 
+// New is constructor for APP. Creates all dependencies and returns app instance.
 func New(
 	log *slog.Logger,
 	grpcPort int,
