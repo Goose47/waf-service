@@ -11,7 +11,8 @@ update:
 
 test:
 	@echo "Running integration tests"
-	@cd tests && go test tests/... && cd -
+	@docker build -t waf-integration-tests-image ./tests >> /dev/null
+	@docker run waf-integration-tests-image
 
 lint:
 	@echo "Running linter for analyzer service"
