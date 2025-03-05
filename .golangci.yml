@@ -3,10 +3,11 @@ run:
   timeout: 1m
   tests: false
   issues-exit-code: 0
-  go: '1.21'
+  go: '1.22'
 
 output:
-  format: colored-line-number
+  formats:
+  - format: colored-line-number
 
 issues:
   max-issues-per-linter: 1000
@@ -18,11 +19,9 @@ linters-settings:
     for-loops: true
 
   stylecheck:
-    go: "1.21"
     checks: ["all"]
 
   staticcheck:
-    go: "1.21"
     checks: ["all"]
 
   nolintlint:
@@ -31,7 +30,6 @@ linters-settings:
     require-specific: true
 
   gosimple:
-    go: "1.21"
     checks: ["all"]
 
   gocyclo:
@@ -58,10 +56,7 @@ linters-settings:
     check-blank: true
 
   govet:
-    check-shadowing: true
     enable-all: true
-    shadow:
-      strict: true
 
   funlen:
     lines: 90
@@ -91,7 +86,7 @@ linters:
     - misspell
     - nakedret
     - nolintlint
-    - exportloopref
+    - copyloopvar
     - prealloc
     - staticcheck
     - stylecheck
