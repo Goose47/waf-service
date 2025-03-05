@@ -6,10 +6,9 @@ ADD go.sum .
 COPY . .
 RUN go build -o app ./main.go
 
-FROM alpine
+FROM golang:alpine
 
 WORKDIR /app
-COPY ./config ./config
-COPY --from=builder /build/app /app/app
+COPY . .
 
-CMD ["./app"]
+CMD ["go",  "test", "tests/..."]
