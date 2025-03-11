@@ -7,7 +7,7 @@ on:
       - 'main'
 
 jobs:
-  lint:
+  lint-waf:
     name: lint
     runs-on: ubuntu-latest
     steps:
@@ -19,6 +19,37 @@ jobs:
         uses: golangci/golangci-lint-action@v6
         with:
           version: v1.64
+          working-directory: waf
+          args: --config=../.golangci.yml
+  lint-analyzer:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 1.23
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.64
+          working-directory: analyzer
+          args: --config=../.golangci.yml
+  lint-detection:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 1.23
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.64
+          working-directory: detection
+          args: --config=../.golangci.yml
+
   test:
     name: test
     runs-on: ubuntu-latest
