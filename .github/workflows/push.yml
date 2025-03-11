@@ -62,7 +62,18 @@ jobs:
           docker network ls
       - run: make test
 
-#  deploy:
-#    name: deploy
-#    runs-on: ubuntu-latest
-#    needs: [test, lint-waf, lint-analyzer, lint-detection]
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    needs: [test, lint-waf, lint-analyzer, lint-detection]
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.2.2
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd waf
+          make update
