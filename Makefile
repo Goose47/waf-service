@@ -12,7 +12,7 @@ update:
 test:
 	@echo "Running integration tests"
 	@docker build -t waf-integration-tests-image ./tests >> /dev/null
-	@docker run --network=waf-network waf-integration-tests-image
+	@docker run --network=waf_waf-network waf-integration-tests-image
 
 lint:
 	@echo "Running linter for analyzer service"
