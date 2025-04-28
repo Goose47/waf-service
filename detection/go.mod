@@ -3,7 +3,7 @@ module waf-detection
 go 1.22.4
 
 require (
-	github.com/Goose47/wafpb v0.0.3
+	github.com/Goose47/wafpb v0.0.8
 	github.com/IBM/sarama v1.43.3
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.1.0

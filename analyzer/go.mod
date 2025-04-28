@@ -3,7 +3,7 @@ module waf-analyzer
 go 1.22.4
 
 require (
-	github.com/Goose47/wafpb v0.0.7
+	github.com/Goose47/wafpb v0.0.8
 	github.com/IBM/sarama v1.43.3
 	github.com/corazawaf/coraza/v3 v3.3.2
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.1.0
