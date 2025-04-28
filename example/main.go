@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	waf, err := wafpkg.New(wafpkg.WithHostPort("rwfshr.ru", 8000))
+	waf, err := wafpkg.New(wafpkg.WithHostPort("89.169.168.23", 8000))
 	if err != nil {
 		panic(err)
 	}

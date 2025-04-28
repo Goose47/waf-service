@@ -30,9 +30,10 @@ func New(
 	producer := mustCreateProducer(kafkaHost, kafkaPort)
 
 	publisherService := services.NewPublisherService(log, producer, kafkaDetectionTopic)
+	limiterService := services.NewLimiterService(log)
 
 	waf := wafpkg.MustCreate(log)
-	analyzerService := services.NewAnalyzerService(log, waf, publisherService)
+	analyzerService := services.NewAnalyzerService(log, waf, publisherService, limiterService)
 
 	grpcApp := grpcapp.New(log, analyzerService, grpcPort)
 	kafka := kafkapkg.MustCreate(log, kafkaHost, kafkaPort, kafkaTopic, analyzerService)
