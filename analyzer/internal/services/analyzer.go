@@ -15,7 +15,7 @@ type publisher interface {
 	Publish(ctx context.Context, ip string) error
 }
 type limiter interface {
-	CheckLimit(ctx context.Context, ip string) (bool, error)
+	CheckLimit(ctx context.Context, dto *dtopkg.HTTPRequest) (bool, error)
 }
 
 // AnalyzerService contains request analyze business logic.
@@ -52,7 +52,7 @@ func (s *AnalyzerService) Analyze(
 
 	log.Info("checking requests rate")
 
-	isAttack, err := s.limiter.CheckLimit(ctx, dto.ClientIP)
+	isAttack, err := s.limiter.CheckLimit(ctx, dto)
 
 	if err != nil {
 		log.Error("failed to check requests rate", slog.Any("error", err))

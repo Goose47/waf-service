@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"log/slog"
+	dtopkg "waf-analyzer/internal/domain/dto"
 )
 
 type fingerprintsProvider interface {
@@ -26,7 +27,7 @@ func NewLimiterService(
 // CheckLimit checks whether requests count from given ip is in RPS range. Returns true if RPS is over the limit.
 func (s *LimiterService) CheckLimit(
 	ctx context.Context,
-	ip string,
+	dto *dtopkg.HTTPRequest,
 ) (bool, error) {
 	const op = "services.LimiterService.CheckLimit"
 

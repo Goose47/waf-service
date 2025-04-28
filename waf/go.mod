@@ -3,7 +3,7 @@ module waf-waf
 go 1.22.4
 
 require (
-	github.com/Goose47/wafpb v0.0.6
+	github.com/Goose47/wafpb v0.0.7
 	github.com/IBM/sarama v1.43.3
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.1.0
 	github.com/ilyakaznacheev/cleanenv v1.5.0
