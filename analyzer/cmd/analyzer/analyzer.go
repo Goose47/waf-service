@@ -23,6 +23,10 @@ func main() {
 		cfg.Kafka.Port,
 		cfg.Kafka.Topic,
 		cfg.Kafka.DetectionTopic,
+		cfg.Detection.Host,
+		cfg.Detection.Port,
+		cfg.Limiter.MaxRequests,
+		cfg.Limiter.Per,
 	)
 
 	ctx, cancel := context.WithCancel(context.Background())

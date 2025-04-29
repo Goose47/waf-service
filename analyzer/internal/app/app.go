@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/IBM/sarama"
 	"log/slog"
+	"time"
 	grpcapp "waf-analyzer/internal/app/grpc"
 	kafkapkg "waf-analyzer/internal/kafka"
 	"waf-analyzer/internal/services"
@@ -26,11 +27,15 @@ func New(
 	kafkaPort int,
 	kafkaTopic string,
 	kafkaDetectionTopic string,
+	detectionHost string,
+	detectionPort int,
+	maxRequests int,
+	per time.Duration,
 ) *App {
 	producer := mustCreateProducer(kafkaHost, kafkaPort)
 
 	publisherService := services.NewPublisherService(log, producer, kafkaDetectionTopic)
-	limiterService := services.NewLimiterService(log)
+	limiterService := services.MustCreatLimiterService(log, detectionHost, detectionPort, maxRequests, per)
 
 	waf := wafpkg.MustCreate(log)
 	analyzerService := services.NewAnalyzerService(log, waf, publisherService, limiterService)
