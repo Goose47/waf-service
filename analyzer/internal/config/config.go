@@ -17,9 +17,9 @@ var (
 type Config struct {
 	Env       string          `yaml:"env"`
 	Kafka     KafkaConfig     `yaml:"kafka"`
-	GRPC      GRPCConfig      `yaml:"grpc"`
 	Detection DetectionConfig `yaml:"detection"`
 	Limiter   LimiterConfig   `yaml:"limiter"`
+	GRPC      GRPCConfig      `yaml:"grpc"`
 }
 
 // GRPCConfig represents application server config.

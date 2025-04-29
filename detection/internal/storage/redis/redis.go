@@ -4,6 +4,7 @@ package redis
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	redislib "github.com/go-redis/redis/v8"
 	"log/slog"
@@ -51,7 +52,7 @@ func (r *Redis) Client(ctx context.Context, ip string) (*dto.Client, error) {
 	res, err := r.client.Get(ctx, ip).Result()
 
 	if err != nil {
-		if err == redislib.Nil {
+		if errors.Is(err, redislib.Nil) {
 			log.Warn("client not found")
 			return &dto.Client{}, storage.ErrNotFound
 		}
