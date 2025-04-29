@@ -1,9 +1,9 @@
 analyzer:
-  host: "analyzer"
-  port: 8000
+  host: "158.160.82.32"
+  port: 8002
 detection:
-  host: "detection"
-  port: 8000
+  host: "158.160.82.32"
+  port: 8001
 waf:
-  host: "waf"
+  host: "158.160.82.32"
   port: 8000

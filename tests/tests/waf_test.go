@@ -5,6 +5,7 @@ import (
 	"github.com/Goose47/wafpb/gen/go/waf"
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"testing"
 	"tests/internal/suite"
 	"time"
@@ -14,6 +15,7 @@ func newWAFRequest(t *testing.T) *waf.AnalyzeRequest {
 	req := newAnalyzeRequest(t)
 
 	return &waf.AnalyzeRequest{
+		Timestamp:   timestamppb.New(time.Now()),
 		ClientIp:    req.ClientIp,
 		ClientPort:  req.ClientPort,
 		ServerIp:    req.ServerIp,
@@ -33,6 +35,7 @@ func newXSSWAFRequest(t *testing.T) *waf.AnalyzeRequest {
 	req.Method = "GET"
 
 	return &waf.AnalyzeRequest{
+		Timestamp:   timestamppb.New(time.Now()),
 		ClientIp:    req.ClientIp,
 		ClientPort:  req.ClientPort,
 		ServerIp:    req.ServerIp,

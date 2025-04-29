@@ -5,10 +5,12 @@ import (
 	"github.com/Goose47/wafpb/gen/go/analyzer"
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"net/url"
 	"strconv"
 	"testing"
 	"tests/internal/suite"
+	"time"
 )
 
 func newAnalyzeRequest(t *testing.T) *analyzer.AnalyzeRequest {
@@ -16,6 +18,7 @@ func newAnalyzeRequest(t *testing.T) *analyzer.AnalyzeRequest {
 	require.NoError(t, err)
 
 	return &analyzer.AnalyzeRequest{
+		Timestamp:  timestamppb.New(time.Now()),
 		ClientIp:   gofakeit.IPv4Address(),
 		ClientPort: strconv.Itoa(gofakeit.IntRange(1024, 65535)),
 		ServerIp:   gofakeit.IPv4Address(),
