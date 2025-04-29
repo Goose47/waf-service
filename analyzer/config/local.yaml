@@ -7,8 +7,8 @@ kafka:
   topic: "analyzer"
   detection_topic: "detection"
 detection:
-  host: "localhost"
-  port: 8001
+  host: "detection"
+  port: 8000
 limiter:
   max_requests: 5
   per: 1s
