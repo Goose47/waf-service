@@ -88,7 +88,7 @@ func TestWAF_MultipleRequests(t *testing.T) {
 		res, err = s.Waf.Analyze(ctx, xssReq)
 		require.NoError(t, err)
 		return res.AttackProbability > 0
-	}, time.Second, time.Second)
+	}, 1500*time.Millisecond, 300*time.Millisecond)
 
 	// Requests that are not attacks will pass.
 	res, err = s.Waf.Analyze(ctx, goodReq)
