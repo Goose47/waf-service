@@ -67,8 +67,6 @@ func (s *LimiterService) CheckLimit(
 		log.Error("failed to get fingerprints", slog.Any("error", err))
 		return false, fmt.Errorf("%s: %w", op, err)
 	}
-
-	log.Info("checking requests rate")
 	requestCount := 0
 	for i := len(fingerprints.Timestamps) - 1; i >= 0; i-- {
 		timestamp := fingerprints.Timestamps[i].AsTime()
@@ -77,7 +75,7 @@ func (s *LimiterService) CheckLimit(
 		}
 		requestCount++
 	}
-	if requestCount >= s.maxRequests {
+	if requestCount > s.maxRequests {
 		return true, nil
 	}
 
