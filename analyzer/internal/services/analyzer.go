@@ -61,6 +61,10 @@ func (s *AnalyzerService) Analyze(
 	}
 	if isAttack {
 		log.Warn("request rate is too high")
+		if err := s.publisher.Publish(ctx, dto.ClientIP); err != nil {
+			log.Error("failed to publish message", slog.Any("error", err))
+			return isAttack, fmt.Errorf("%s: %w", op, err)
+		}
 
 		return true, nil
 	}
