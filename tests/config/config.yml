@@ -7,3 +7,6 @@ detection:
 waf:
   host: "158.160.82.32"
   port: 8000
+limiter:
+  max_requests: 5
+  per: 1s

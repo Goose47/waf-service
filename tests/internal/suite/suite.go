@@ -16,9 +16,10 @@ import (
 
 type Suite struct {
 	*testing.T
-	Waf       waf.WAFClient
-	Detection detection.DetectionClient
-	Analyzer  analyzer.AnalyzerClient
+	Waf        waf.WAFClient
+	Detection  detection.DetectionClient
+	Analyzer   analyzer.AnalyzerClient
+	LimiterCfg config.LimiterConfig
 }
 
 func New(
@@ -42,6 +43,7 @@ func New(
 		wafClient,
 		detectionClient,
 		analyzerClient,
+		cfg.Limiter,
 	}, ctx
 }
 

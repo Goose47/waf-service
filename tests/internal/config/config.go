@@ -4,17 +4,25 @@ import (
 	"fmt"
 	"github.com/ilyakaznacheev/cleanenv"
 	"os"
+	"time"
 )
 
 type Config struct {
-	Analyzer  GRPCConfig `yaml:"analyzer"`
-	Detection GRPCConfig `yaml:"detection"`
-	WAF       GRPCConfig `yaml:"waf"`
+	Analyzer  GRPCConfig    `yaml:"analyzer"`
+	Detection GRPCConfig    `yaml:"detection"`
+	WAF       GRPCConfig    `yaml:"waf"`
+	Limiter   LimiterConfig `yaml:"limiter"`
 }
 
 type GRPCConfig struct {
 	Host string `yaml:"host"`
 	Port int    `yaml:"port"`
+}
+
+// LimiterConfig represents rate limiter config.
+type LimiterConfig struct {
+	MaxRequests int           `yaml:"max_requests"`
+	Per         time.Duration `yaml:"per"`
 }
 
 // MustLoadPath loads config from configPath and panics on any errors
