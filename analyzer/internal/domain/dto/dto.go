@@ -1,7 +1,10 @@
 // Package dto contains DTOs used in service.
 package dto
 
-import gen "github.com/Goose47/wafpb/gen/go/analyzer"
+import (
+	gen "github.com/Goose47/wafpb/gen/go/analyzer"
+	"time"
+)
 
 // HTTPParam represents incoming request key-value parameter.
 type HTTPParam struct {
@@ -11,6 +14,7 @@ type HTTPParam struct {
 
 // HTTPRequest represents incoming request to analyze.
 type HTTPRequest struct {
+	Timestamp   time.Time    `json:"timestamp"`
 	ClientIP    string       `json:"client_ip"`
 	ClientPort  string       `json:"client_port"`
 	ServerIP    string       `json:"server_ip"`
@@ -26,6 +30,7 @@ type HTTPRequest struct {
 // NewHTTPRequest is a factory function for creating DTO from grpc request.
 func NewHTTPRequest(req *gen.AnalyzeRequest) *HTTPRequest {
 	res := &HTTPRequest{
+		Timestamp:  req.Timestamp.AsTime(),
 		ClientIP:   req.ClientIp,
 		ClientPort: req.ClientPort,
 		ServerIP:   req.ServerIp,

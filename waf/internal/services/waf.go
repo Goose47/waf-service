@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"time"
 	dtopkg "waf-waf/internal/domain/dto"
 )
 
@@ -16,7 +17,7 @@ type WAFService struct {
 }
 
 type isSuspiciousProvider interface {
-	IsSuspicious(ctx context.Context, ip string) (bool, error)
+	IsSuspicious(ctx context.Context, ip string, timestamp time.Time) (bool, error)
 }
 
 type publisher interface {
@@ -50,7 +51,7 @@ func (s *WAFService) Analyze(ctx context.Context, dto *dtopkg.HTTPRequest) (floa
 
 	log.Info("checking ip", slog.String("ip", dto.ClientIP))
 
-	isSuspicious, err := s.detection.IsSuspicious(ctx, dto.ClientIP)
+	isSuspicious, err := s.detection.IsSuspicious(ctx, dto.ClientIP, dto.Timestamp)
 
 	if err != nil {
 		log.Info("failed to check ip", slog.String("ip", dto.ClientIP))

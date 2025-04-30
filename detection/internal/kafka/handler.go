@@ -9,7 +9,7 @@ import (
 )
 
 type fingerprintSaver interface {
-	SaveIP(ctx context.Context, ip string) error
+	MarkIPSuspicious(ctx context.Context, ip string) error
 }
 
 type consumerHandler struct {
@@ -71,7 +71,7 @@ func (h *consumerHandler) ConsumeClaim(
 
 		log.Info("saving message")
 
-		err = h.fingerprintSaver.SaveIP(h.ctx, parsedMessage.IP)
+		err = h.fingerprintSaver.MarkIPSuspicious(h.ctx, parsedMessage.IP)
 		if err != nil {
 			log.Error("failed to save message", slog.Any("error", err))
 			continue

@@ -4,6 +4,7 @@ import (
 	"github.com/Goose47/wafpb/gen/go/detection"
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"testing"
 	"tests/internal/suite"
 	"time"
@@ -17,7 +18,8 @@ func TestDetection_CheckIP(t *testing.T) {
 
 	checkIP := func() bool {
 		req := &detection.CheckIPRequest{
-			Ip: ip,
+			Ip:        ip,
+			Timestamp: timestamppb.New(time.Now()),
 		}
 
 		res, err := s.Detection.CheckIP(ctx, req)

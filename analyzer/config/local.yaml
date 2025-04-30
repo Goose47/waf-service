@@ -6,3 +6,9 @@ kafka:
   port: 29092
   topic: "analyzer"
   detection_topic: "detection"
+detection:
+  host: "detection"
+  port: 8000
+limiter:
+  max_requests: 5
+  per: 1s

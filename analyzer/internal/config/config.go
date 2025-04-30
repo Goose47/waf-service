@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/ilyakaznacheev/cleanenv"
 	"os"
+	"time"
 )
 
 var (
@@ -14,9 +15,11 @@ var (
 
 // Config represents main application config.
 type Config struct {
-	Env   string      `yaml:"env"`
-	Kafka KafkaConfig `yaml:"kafka"`
-	GRPC  GRPCConfig  `yaml:"grpc"`
+	Env       string          `yaml:"env"`
+	Kafka     KafkaConfig     `yaml:"kafka"`
+	Detection DetectionConfig `yaml:"detection"`
+	Limiter   LimiterConfig   `yaml:"limiter"`
+	GRPC      GRPCConfig      `yaml:"grpc"`
 }
 
 // GRPCConfig represents application server config.
@@ -30,6 +33,18 @@ type KafkaConfig struct {
 	Topic          string `yaml:"topic"`
 	DetectionTopic string `yaml:"detection_topic"`
 	Port           int    `yaml:"port"`
+}
+
+// DetectionConfig represents detection service config.
+type DetectionConfig struct {
+	Host string `yaml:"host"`
+	Port int    `yaml:"port"`
+}
+
+// LimiterConfig represents rate limiter config.
+type LimiterConfig struct {
+	MaxRequests int           `yaml:"max_requests"`
+	Per         time.Duration `yaml:"per"`
 }
 
 // MustLoadPath loads config from configPath and panics on any errors.

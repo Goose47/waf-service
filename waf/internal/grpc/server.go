@@ -31,6 +31,9 @@ func (s *serverAPI) Analyze(
 ) (*gen.AnalyzeResponse, error) {
 	const op = "grpc.Analyze"
 
+	if in.Timestamp == nil {
+		return nil, fmt.Errorf("%s: %w", op, status.Error(codes.InvalidArgument, "timestamp is required"))
+	}
 	if in.ClientIp == "" {
 		return nil, fmt.Errorf("%s: %w", op, status.Error(codes.InvalidArgument, "client ip is required"))
 	}

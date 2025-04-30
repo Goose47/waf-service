@@ -6,9 +6,11 @@ import (
 	gen "github.com/Goose47/wafpb/gen/go/detection"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"log/slog"
 	"net"
 	"strconv"
+	"time"
 )
 
 // DetectionService contains business logic related to detection service.
@@ -37,15 +39,16 @@ func MustCreateDetectionService(
 	}
 }
 
-// IsSuspicious calls detection service to check whether given ip is suspicious (has fingerprints).
-func (d *DetectionService) IsSuspicious(ctx context.Context, ip string) (bool, error) {
+// IsSuspicious calls detection service to check whether given ip is suspicious.
+func (d *DetectionService) IsSuspicious(ctx context.Context, ip string, timestamp time.Time) (bool, error) {
 	const op = "services.detection.IsSuspicious"
 	log := d.log.With(slog.String("op", op), slog.String("ip", ip))
 
 	log.Info("checking ip")
 
 	res, err := d.client.CheckIP(ctx, &gen.CheckIPRequest{
-		Ip: ip,
+		Ip:        ip,
+		Timestamp: timestamppb.New(timestamp),
 	})
 
 	if err != nil {

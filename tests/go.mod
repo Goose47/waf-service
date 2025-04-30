@@ -3,7 +3,7 @@ module tests
 go 1.23.4
 
 require (
-	github.com/Goose47/wafpb v0.0.6
+	github.com/Goose47/wafpb v0.0.9
 	github.com/brianvoe/gofakeit/v6 v6.28.0
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/stretchr/testify v1.10.0

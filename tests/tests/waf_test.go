@@ -5,6 +5,7 @@ import (
 	"github.com/Goose47/wafpb/gen/go/waf"
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"testing"
 	"tests/internal/suite"
 	"time"
@@ -14,6 +15,7 @@ func newWAFRequest(t *testing.T) *waf.AnalyzeRequest {
 	req := newAnalyzeRequest(t)
 
 	return &waf.AnalyzeRequest{
+		Timestamp:   timestamppb.New(time.Now()),
 		ClientIp:    req.ClientIp,
 		ClientPort:  req.ClientPort,
 		ServerIp:    req.ServerIp,
@@ -33,6 +35,7 @@ func newXSSWAFRequest(t *testing.T) *waf.AnalyzeRequest {
 	req.Method = "GET"
 
 	return &waf.AnalyzeRequest{
+		Timestamp:   timestamppb.New(time.Now()),
 		ClientIp:    req.ClientIp,
 		ClientPort:  req.ClientPort,
 		ServerIp:    req.ServerIp,
@@ -85,7 +88,7 @@ func TestWAF_MultipleRequests(t *testing.T) {
 		res, err = s.Waf.Analyze(ctx, xssReq)
 		require.NoError(t, err)
 		return res.AttackProbability > 0
-	}, time.Second, time.Millisecond)
+	}, 1500*time.Millisecond, 300*time.Millisecond)
 
 	// Requests that are not attacks will pass.
 	res, err = s.Waf.Analyze(ctx, goodReq)
